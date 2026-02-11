@@ -37,7 +37,7 @@ env:
     (github.ref == 'refs/heads/develop' && 'stgadvanced') ||
     (github.ref == 'refs/heads/staging' && 'stgadvanced') ||
     'staging' }}
-  WIZ_ENV: "app"
+  WIZ_ENV: "prod"
   IMAGE_NAME: "${{ github.event.repository.name }}"
 
 jobs:
@@ -98,7 +98,7 @@ jobs:
       - name: Restore Wiz configuration and rules cache
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb  # v5.0.1
         with:
-          path: ~/.wiz/${{ (env.WIZ_ENV == '' || env.WIZ_ENV == 'app') && 'clusterFilesCache' || format('{0}_clusterFilesCache', env.WIZ_ENV) }}
+          path: ~/.wiz/${{ env.WIZ_ENV == '' && 'clusterFilesCache' || format('{0}_clusterFilesCache', env.WIZ_ENV) }}
           key: ${{ runner.os }}-wiz-config-${{ env.WIZ_ENV || 'default' }}-${{ env.DEPLOY_ENV }}
           restore-keys: |
             ${{ runner.os }}-wiz-config-${{ env.WIZ_ENV || 'default' }}-${{ env.DEPLOY_ENV }}
@@ -235,7 +235,7 @@ jobs:
         run: |
           echo "Checking for cluster files cache after scan..."
           # Determine cache path based on WIZ_ENV
-          if [ -z "${{ env.WIZ_ENV }}" ] || [ "${{ env.WIZ_ENV }}" = "app" ]; then
+          if [ -z "${{ env.WIZ_ENV }}" ]; then
             CACHE_DIR="$HOME/.wiz/clusterFilesCache"
           else
             CACHE_DIR="$HOME/.wiz/${{ env.WIZ_ENV }}_clusterFilesCache"
@@ -257,7 +257,7 @@ jobs:
         if: always() && steps.get-cluster-sha256.outputs.cache_exists == 'true'
         uses: actions/cache@v4
         with:
-          path: ~/.wiz/${{ (env.WIZ_ENV == '' || env.WIZ_ENV == 'app') && 'clusterFilesCache' || format('{0}_clusterFilesCache', env.WIZ_ENV) }}
+          path: ~/.wiz/${{ env.WIZ_ENV == '' && 'clusterFilesCache' || format('{0}_clusterFilesCache', env.WIZ_ENV) }}
           key: ${{ runner.os }}-wiz-config-${{ env.WIZ_ENV || 'default' }}-${{ matrix.dockerfile }}-${{ env.DEPLOY_ENV }}
           restore-keys: |
             ${{ runner.os }}-wiz-config-${{ env.WIZ_ENV || 'default' }}-${{ matrix.dockerfile }}-${{ env.DEPLOY_ENV }}
