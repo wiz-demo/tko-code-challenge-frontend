@@ -34,8 +34,8 @@ env:
   DEPLOY_ENV: ${{
     github.event_name == 'workflow_dispatch' && github.event.inputs.tenant ||
     (github.ref == 'refs/heads/main' && 'production') ||
-    (github.ref == 'refs/heads/develop' && 'staging') ||
-    (github.ref == 'refs/heads/staging' && 'staging') ||
+    (github.ref == 'refs/heads/develop' && 'stgadvanced') ||
+    (github.ref == 'refs/heads/staging' && 'stgadvanced') ||
     'staging' }}
   WIZ_ENV: "demo"
   IMAGE_NAME: "${{ github.event.repository.name }}"
