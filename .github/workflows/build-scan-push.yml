@@ -37,7 +37,7 @@ env:
     (github.ref == 'refs/heads/develop' && 'stgadvanced') ||
     (github.ref == 'refs/heads/staging' && 'stgadvanced') ||
     'staging' }}
-  WIZ_ENV: "demo"
+  WIZ_ENV: "app"
   IMAGE_NAME: "${{ github.event.repository.name }}"
 
 jobs:
