@@ -32,11 +32,11 @@ permissions:
 
 env:
   DEPLOY_ENV: ${{
-    github.event_name == 'workflow_dispatch' && github.event.inputs.environment ||
-    (github.ref == 'refs/heads/main' && 'advanced') ||
-    (github.ref == 'refs/heads/develop' && 'stgadvanced') ||
-    (github.ref == 'refs/heads/staging' && 'stgadvanced') ||
-    'test' }}
+    github.event_name == 'workflow_dispatch' && github.event.inputs.tenant ||
+    (github.ref == 'refs/heads/main' && 'production') ||
+    (github.ref == 'refs/heads/develop' && 'staging') ||
+    (github.ref == 'refs/heads/staging' && 'staging') ||
+    'staging' }}
   WIZ_ENV: "demo"
   IMAGE_NAME: "${{ github.event.repository.name }}"
 
@@ -61,18 +61,18 @@ jobs:
         with:
           export-env: true
         env:
-          IMAGE_REGISTRY: op://wiz-demo/gar_${{ env.DEPLOY_ENV }}-registry/registryUrl
-          REGISTRY_REGION: op://wiz-demo/gar_${{ env.DEPLOY_ENV }}-registry/registryRegion
-          WIF_PROVIDER: op://wiz-demo/gar_${{ env.DEPLOY_ENV }}-registry/workloadIdentityProvider
-          WIF_SERVICE_ACCOUNT: op://wiz-demo/gar_${{ env.DEPLOY_ENV }}-registry/pusherServiceAccount
-          WIZ_CLIENT_ID: op://wiz-demo/tenant_${{ env.DEPLOY_ENV}}-wizcli-sa/username
-          WIZ_CLIENT_SECRET: op://wiz-demo/tenant_${{ env.DEPLOY_ENV }}-wizcli-sa/password
-          WIZCLI_URL: op://wiz-demo/tenant_${{ env.DEPLOY_ENV }}-wizcli-sa/wizcliUrl
-          WIZ_OS_REGISTRY: op://wiz-demo/tenant_${{ env.DEPLOY_ENV == 'stgadvanced' && 'adv-stg' || 'adv-prod' }}-tenant-info/wizOsRegistryUrl
-          WIZ_OS_USER: op://wiz-demo/tenant_${{ env.DEPLOY_ENV == 'stgadvanced' && 'adv-stg' || 'adv-prod' }}-tenant-info/wizOsRegistryUsername
-          WIZ_OS_PASSWORD: op://wiz-demo/tenant_${{ env.DEPLOY_ENV == 'stgadvanced' && 'adv-stg' || 'adv-prod' }}-tenant-info/wizOsRegistryPassword
-          WIZ_OS_CLIENT_ID: op://wiz-demo/tenant_${{ env.DEPLOY_ENV }}-wizos-apk-credentials/username
-          WIZ_OS_CLIENT_SECRET: op://wiz-demo/tenant_${{ env.DEPLOY_ENV }}-wizos-apk-credentials/credential
+          IMAGE_REGISTRY: op://wiz-ctf/gar_${{ env.DEPLOY_ENV }}-registry/registryUrl
+          REGISTRY_REGION: op://wiz-ctf/gar_${{ env.DEPLOY_ENV }}-registry/registryRegion
+          WIF_PROVIDER: op://wiz-ctf/gar_${{ env.DEPLOY_ENV }}-registry/workloadIdentityProvider
+          WIF_SERVICE_ACCOUNT: op://wiz-ctf/gar_${{ env.DEPLOY_ENV }}-registry/pusherServiceAccount
+          WIZ_CLIENT_ID: op://wiz-ctf/tenant_ctf-wizcli-sa/username
+          WIZ_CLIENT_SECRET: op://wiz-ctf/tenant_ctf-wizcli-sa/password
+          WIZCLI_URL: op://wiz-ctf/tenant_ctf-wizcli-sa/wizcliUrl
+          WIZ_OS_REGISTRY: op://wiz-ctf/tenant_sko-ctf-tenant-details/wizOsRegistryUrl
+          WIZ_OS_USER: op://wiz-ctf/tenant_sko-ctf-tenant-details/wizOsRegistryUsername
+          WIZ_OS_PASSWORD: op://wiz-ctf/tenant_sko-ctf-tenant-details/wizOsRegistryPassword
+          WIZ_OS_CLIENT_ID: op://wiz-ctf/tenant_ctf-wizos-apk-credentials/username
+          WIZ_OS_CLIENT_SECRET: op://wiz-ctf/tenant_ctf-wizos-apk-credentials/credential
 
       # - name: Normalize IMAGE_NAME for file paths
       #   run: |
