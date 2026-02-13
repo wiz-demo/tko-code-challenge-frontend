@@ -89,7 +89,7 @@ export default function Home() {
         <Link href="/" className="text-xl font-bold tracking-tight hover:text-[#97BBFF] transition-colors">Beyond AI</Link>
         <div className="flex items-center gap-6">
           <Link href="/" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Home</Link>
-          <Link href="/prompts" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Prompt Library</Link>
+          <Link href="/prompts" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Community</Link>
         </div>
       </nav>
 
