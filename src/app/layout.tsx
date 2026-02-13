@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sorcery Solutions",
-  description: "A fun demo application by your friends at Wiz.",
+  title: "Beyond AI — Sorcery Solutions",
+  description: "AI-powered tutor for upskilling in tech — by Wiz.",
 };
 
 export default function RootLayout({

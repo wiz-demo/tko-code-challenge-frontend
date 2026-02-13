@@ -30,24 +30,24 @@ export default function PromptsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#173AAA] to-[#01123F] text-white p-6">
-      <nav className="z-20 flex justify-between items-center max-w-5xl mx-auto py-4 px-6 bg-black bg-opacity-30 rounded-xl mb-8 shadow-xl">
-        <Link href="/" className="text-2xl font-bold hover:text-[#97BBFF]">🤖 Beyond AI</Link>
-        <div className="space-x-4">
-          <Link href="/" className="hover:underline hover:text-[#6197FF]">Home</Link>
-          <Link href="/prompts" className="hover:underline hover:text-[#6197FF]">Prompt Library</Link>
+    <div className="min-h-screen bg-gradient-to-br from-[#01123F] via-[#0a1e5c] to-[#173AAA] text-white px-6 pt-4 pb-16">
+      <nav className="z-20 relative flex justify-between items-center max-w-5xl mx-auto py-3 px-8 glass rounded-2xl mb-12 mt-2">
+        <Link href="/" className="text-xl font-bold tracking-tight hover:text-[#97BBFF] transition-colors">Beyond AI</Link>
+        <div className="flex items-center gap-6">
+          <Link href="/" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Home</Link>
+          <Link href="/prompts" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Prompt Library</Link>
         </div>
       </nav>
 
-      <h1 className="text-4xl font-bold text-center mb-6">� AI Prompt Library</h1>
+      <h1 className="text-4xl font-bold text-center mb-8 gradient-text tracking-tight">AI Prompt Library</h1>
       {loading ? (
-        <p className="text-center text-lg">Loading prompt templates...</p>
+        <p className="text-center text-lg text-white/60">Loading prompt templates...</p>
       ) : (
-        <div className="max-w-2xl mx-auto space-y-4">
+        <div className="max-w-2xl mx-auto space-y-5">
           {prompts.map((prompt) => (
-            <div key={prompt.id} className="bg-black bg-opacity-30 p-4 rounded-xl shadow-xl">
-              <h2 className="text-2xl font-semibold">💡 {prompt.name}</h2>
-              <p className="text-[#97BBFF]">{prompt.prompt}</p>
+            <div key={prompt.id} className="glass glow-hover rounded-2xl p-5">
+              <h2 className="text-xl font-semibold mb-2">{prompt.name}</h2>
+              <p className="text-[#97BBFF] text-sm leading-relaxed">{prompt.prompt}</p>
             </div>
           ))}
         </div>

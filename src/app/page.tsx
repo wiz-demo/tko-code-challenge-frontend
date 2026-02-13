@@ -84,12 +84,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#173AAA] to-[#01123F] text-white p-6 relative overflow-hidden">
-      <nav className="z-20 flex justify-between items-center max-w-5xl mx-auto py-4 px-6 bg-black bg-opacity-30 rounded-xl mb-8 shadow-xl">
-        <Link href="/" className="text-2xl font-bold hover:text-[#97BBFF]">🤖 Beyond AI</Link>
-        <div className="space-x-4">
-          <Link href="/" className="hover:underline hover:text-[#6197FF]">Home</Link>
-          <Link href="/prompts" className="hover:underline hover:text-[#6197FF]">Prompt Library</Link>
+    <div className="min-h-screen bg-gradient-to-br from-[#01123F] via-[#0a1e5c] to-[#173AAA] text-white px-6 pt-4 pb-16 relative overflow-hidden">
+      <nav className="z-20 relative flex justify-between items-center max-w-5xl mx-auto py-3 px-8 glass rounded-2xl mb-12 mt-2">
+        <Link href="/" className="text-xl font-bold tracking-tight hover:text-[#97BBFF] transition-colors">Beyond AI</Link>
+        <div className="flex items-center gap-6">
+          <Link href="/" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Home</Link>
+          <Link href="/prompts" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Prompt Library</Link>
         </div>
       </nav>
 
@@ -104,56 +104,56 @@ export default function Home() {
               width: `${star.size}px`,
               height: `${star.size}px`,
             }}
-            className="absolute bg-white rounded-full animate-pulse"
+            className="absolute bg-white rounded-full animate-twinkle opacity-20"
           ></div>
         ))}
       </div>
 
-      <main className="flex flex-col items-center justify-center z-10">
-        <h1 className="text-5xl font-extrabold mb-4 animate-pulse" style={{ textShadow: '2px 2px 8px #000000' }}>Beyond AI</h1>
-        <p className="text-xl mb-6 text-center max-w-xl">
-          Upskill your team with AI-powered prompt engineering. Master the art of effective communication with AI to unlock your organization's potential.
+      <main className="relative flex flex-col items-center justify-center z-10 py-8">
+        <h1 className="text-6xl font-extrabold mb-6 gradient-text tracking-tight">Beyond AI</h1>
+        <p className="text-lg mb-10 text-center max-w-2xl text-white/70 leading-relaxed">
+          Your AI-powered tutor for upskilling in tech. Master prompt engineering, explore AI capabilities, and level up your skills with hands-on learning.
         </p>
 
-        <div className="bg-black bg-opacity-30 rounded-2xl p-6 shadow-2xl w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-2">Request a Custom Template</h2>
-          {/* Manual Input Form */}
+        <div className="glass glow-hover rounded-2xl p-8 w-full max-w-lg">
+          <h2 className="text-xl font-semibold mb-5 text-white/90">What do you want to learn?</h2>
+          {/* Learning Request Form */}
           <form onSubmit={submitForm} className="flex flex-col space-y-4">
             <input
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               type="text"
               placeholder="Your name"
-              className="p-2 rounded-lg bg-gray-200 text-black"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder-white/40 transition-colors focus:border-[#6197FF]"
             />
             <input
               value={form.prompt}
               onChange={(e) => setForm({ ...form, prompt: e.target.value })}
               type="text"
-              placeholder="Describe your AI use case"
-              className="p-2 rounded-lg bg-gray-200 text-black"
+              placeholder="What skill do you want to master?"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder-white/40 transition-colors focus:border-[#6197FF]"
             />
-            <button type="submit" className="bg-[#FF9BBE] hover:bg-[#C56BA4] text-white py-2 rounded-xl shadow-md">
-              ✨ Submit Request
+            <button type="submit" className="w-full bg-gradient-to-r from-[#FF9BBE] to-[#C56BA4] hover:from-[#C56BA4] hover:to-[#FF9BBE] text-white py-3 rounded-xl font-semibold btn-transition shadow-lg shadow-pink-500/20">
+              Get Started
             </button>
           </form>
           {submitted && (
-            <div className="mt-4 text-[#97BBFF]">
-              ✨ Request submitted successfully! We'll be in touch soon. 📧
+            <div className="mt-4 text-[#97BBFF] text-sm">
+              You're in! We'll build your learning path and reach out soon.
             </div>
           )}
 
-          {/* YAML Upload Form */}
-          <form onSubmit={handleYamlUpload} className="flex flex-col space-y-4 mt-6">
-            <h3 className="text-xl font-bold">Upload Prompt Templates (YAML)</h3>
+          {/* Curriculum Import Form */}
+          <form onSubmit={handleYamlUpload} className="flex flex-col space-y-4 mt-6 pt-6 border-t border-white/10">
+            <h3 className="text-lg font-semibold text-white/90">Import a Curriculum</h3>
             <input
               type="file"
               accept=".yaml,.yml"
               onChange={(e) => setYamlFile(e.target.files?.[0] || null)}
-              className="p-2 rounded-lg bg-gray-200 text-black"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-[#0254EC]/30 file:text-white/80 file:text-sm file:font-medium"
             />
-            <button type="submit" className="bg-[#6197FF] hover:bg-[#173AAA] text-white py-2 rounded-xl shadow-md">
-              📁 Upload Templates
+            <button type="submit" className="w-full bg-gradient-to-r from-[#0254EC] to-[#173AAA] hover:from-[#173AAA] hover:to-[#0254EC] text-white py-3 rounded-xl font-semibold btn-transition shadow-lg shadow-blue-500/20">
+              Import Curriculum
             </button>
           </form>
         </div>
