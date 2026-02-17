@@ -76,7 +76,7 @@ export default function ChatWidget() {
           aria-label="Open chat"
         >
           <span className="text-2xl">💬</span>
-          <span className="font-semibold">Ask Beyond AI</span>
+          <span className="font-semibold">Ask the Oracle</span>
         </button>
       )}
 
@@ -87,7 +87,7 @@ export default function ChatWidget() {
           <div className="bg-black/30 backdrop-blur-sm p-4 flex justify-between items-center border-b border-white/10">
             <div className="flex items-center gap-2">
               <span className="text-2xl">🔮</span>
-              <h3 className="text-white font-bold text-lg">Beyond AI</h3>
+              <h3 className="text-white font-bold text-lg">Neuralworks</h3>
             </div>
             <button
               onClick={() => setIsOpen(false)}
@@ -102,7 +102,8 @@ export default function ChatWidget() {
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.length === 0 && (
               <div className="text-center text-[#97BBFF] text-sm mt-8">
-                <p className="mb-2">Welcome to Beyond AI</p>
+                <p className="mb-2">Welcome to Neuralworks
+                </p>
                 <p className="text-white/40">Ask me anything — I'm here to help you learn.</p>
               </div>
             )}

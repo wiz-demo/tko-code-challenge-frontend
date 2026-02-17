@@ -86,7 +86,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#01123F] via-[#0a1e5c] to-[#173AAA] text-white px-6 pt-4 pb-16 relative overflow-hidden">
       <nav className="z-20 relative flex justify-between items-center max-w-5xl mx-auto py-3 px-8 glass rounded-2xl mb-12 mt-2">
-        <Link href="/" className="text-xl font-bold tracking-tight hover:text-[#97BBFF] transition-colors">Beyond AI</Link>
+        <Link href="/" className="text-xl font-bold tracking-tight hover:text-[#97BBFF] transition-colors">Neuralworks</Link>
         <div className="flex items-center gap-6">
           <Link href="/" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Home</Link>
           <Link href="/prompts" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Community</Link>
@@ -110,7 +110,7 @@ export default function Home() {
       </div>
 
       <main className="relative flex flex-col items-center justify-center z-10 py-8">
-        <h1 className="text-6xl font-extrabold mb-6 gradient-text tracking-tight">Beyond AI</h1>
+        <h1 className="text-6xl font-extrabold mb-6 gradient-text tracking-tight">Neuralworks</h1>
         <p className="text-lg mb-10 text-center max-w-2xl text-white/70 leading-relaxed">
           Your AI-powered tutor for upskilling in tech. Master prompt engineering, explore AI capabilities, and level up your skills with hands-on learning.
         </p>

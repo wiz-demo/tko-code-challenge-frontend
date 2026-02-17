@@ -32,7 +32,7 @@ export default function PromptsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#01123F] via-[#0a1e5c] to-[#173AAA] text-white px-6 pt-4 pb-16">
       <nav className="z-20 relative flex justify-between items-center max-w-5xl mx-auto py-3 px-8 glass rounded-2xl mb-12 mt-2">
-        <Link href="/" className="text-xl font-bold tracking-tight hover:text-[#97BBFF] transition-colors">Beyond AI</Link>
+        <Link href="/" className="text-xl font-bold tracking-tight hover:text-[#97BBFF] transition-colors">Neuralworks</Link>
         <div className="flex items-center gap-6">
           <Link href="/" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Home</Link>
           <Link href="/prompts" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Community</Link>
