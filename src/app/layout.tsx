@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Beyond AI — Sorcery Solutions",
+  title: "Beyond AI",
   description: "AI-powered tutor for upskilling in tech — by Wiz.",
 };
 

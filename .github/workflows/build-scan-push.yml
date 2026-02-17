@@ -19,7 +19,6 @@ on:
       - main
       - staging
       - develop
-      - defend-test
     paths:
       - src/**
       - docker/**
@@ -37,9 +36,7 @@ env:
     (github.ref == 'refs/heads/main' && 'production') ||
     (github.ref == 'refs/heads/develop' && 'stgadvanced') ||
     (github.ref == 'refs/heads/staging' && 'stgadvanced') ||
-    (github.ref == 'refs/heads/defend-test' && 'stgadvanced') ||
     'staging' }}
-  IMAGE_TAG: ${{ github.ref == 'refs/heads/defend-test' && 'defend-test' || vars.IMAGE_TAG }}
   WIZ_ENV: "prod"
   IMAGE_NAME: "${{ github.event.repository.name }}"
 
@@ -157,7 +154,7 @@ jobs:
           load: true
           push: false
           tags: |
-            ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ env.IMAGE_TAG }}
+            ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ vars.IMAGE_TAG }}
             ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ env.DEPLOY_ENV }}-${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
         continue-on-error: ${{ env.DEPLOY_ENV == 'develop' }}
@@ -203,7 +200,7 @@ jobs:
       - name: Run Wiz Security Scan
         if: success() || (failure() && env.DEPLOY_ENV == 'develop')
         run: |
-          sudo -E ${{ env.WIZCLI_PATH }} scan container-image "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ env.IMAGE_TAG }}" \
+          sudo -E ${{ env.WIZCLI_PATH }} scan container-image "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ vars.IMAGE_TAG }}" \
             --dockerfile "./docker/${{ matrix.dockerfile }}/Dockerfile" \
             --tag github_action_run_id=${{ github.run_id }} \
             --tag dockerfile=${{ matrix.dockerfile }} \
@@ -218,9 +215,9 @@ jobs:
         if: success() || (failure() && env.DEPLOY_ENV == 'develop')
         run: |
           echo "Pushing pre-built image to registry..."
-          docker push "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ env.IMAGE_TAG }}"
+          docker push "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ vars.IMAGE_TAG }}"
           docker push "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ env.DEPLOY_ENV }}-${{ github.sha }}"
-          REGISTRY_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ env.IMAGE_TAG }} | cut -d'@' -f2)
+          REGISTRY_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ vars.IMAGE_TAG }} | cut -d'@' -f2)
           echo "Registry digest: $REGISTRY_DIGEST"
           echo "digest=$REGISTRY_DIGEST" >> $GITHUB_OUTPUT
         continue-on-error: ${{ env.DEPLOY_ENV == 'develop' }}
@@ -229,7 +226,7 @@ jobs:
         if: success() || (failure() && env.DEPLOY_ENV == 'develop')
         run: |
           echo "Tagging image in Wiz with digest..."
-          sudo -E ${{ env.WIZCLI_PATH }} tag "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ env.IMAGE_TAG }}"
+          sudo -E ${{ env.WIZCLI_PATH }} tag "${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.dockerfile }}:${{ vars.IMAGE_TAG }}"
         continue-on-error: ${{ env.DEPLOY_ENV == 'develop' }}
 
       - name: Get Cluster Files Cache SHA256
