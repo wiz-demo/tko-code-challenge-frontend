@@ -33,7 +33,7 @@ permissions:
 env:
   DEPLOY_ENV: ${{
     github.event_name == 'workflow_dispatch' && github.event.inputs.tenant ||
-    (github.ref == 'refs/heads/main' && 'production') ||
+    (github.ref == 'refs/heads/main' && 'advanced') ||
     (github.ref == 'refs/heads/develop' && 'stgadvanced') ||
     (github.ref == 'refs/heads/staging' && 'stgadvanced') ||
     'staging' }}
