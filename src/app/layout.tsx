@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ChatWidget from "./components/ChatWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sorcery Solutions",
-  description: "A fun demo application by your friends at Wiz.",
+  title: "Beyond AI",
+  description: "AI-powered tutor for upskilling in tech — by Wiz.",
 };
 
 export default function RootLayout({
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <ChatWidget />
       </body>
     </html>
   );
