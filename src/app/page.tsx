@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import yaml from 'js-yaml';
@@ -23,6 +24,8 @@ export default function Home() {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [stars, setStars] = useState<Star[]>([]);
   const [yamlFile, setYamlFile] = useState<File | null>(null);
+  const searchParams = useSearchParams();
+  const gotRoot = searchParams.get('got_root');
 
   useEffect(() => {
     const starArray: Star[] = Array.from({ length: 30 }, (_, n) => ({
@@ -92,6 +95,12 @@ export default function Home() {
           <Link href="/prompts" className="text-sm font-medium hover:text-[#97BBFF] transition-colors">Community</Link>
         </div>
       </nav>
+
+      {gotRoot === 'WelcomeToWizExposureTKO27' && (
+        <div className="relative z-20 max-w-5xl mx-auto mb-8 px-8 py-4 glass rounded-2xl text-center text-2xl font-bold text-[#97BBFF]">
+          WizCongrats!
+        </div>
+      )}
 
       <div className="absolute inset-0 z-0 pointer-events-none">
         {stars.map((star) => (
