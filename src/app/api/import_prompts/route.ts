@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:8000';
 
 export async function POST(req: NextRequest) {
     try {
-        // Expect "yaml_content" instead of "yaml"
         const { yaml_content } = await req.json();
 
-        const res = await fetch(`${API_BASE_URL}/api/import_spellbook`, {
+        const res = await fetch(`${API_BASE_URL}/api/import_prompts`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ yaml_content }), // Pass "yaml_content" to the backend
+            body: JSON.stringify({ yaml_content }),
         });
 
         const data = await res.json();

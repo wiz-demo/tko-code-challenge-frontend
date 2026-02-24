@@ -1,0 +1,1 @@
+../../../.github/skills/wizcli-setup/SKILL.md

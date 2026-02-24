@@ -39,14 +39,17 @@ export default function PromptsPage() {
         </div>
       </nav>
 
-      <h1 className="text-4xl font-bold text-center mb-8 gradient-text tracking-tight">AI Prompt Library</h1>
+      <h1 className="text-4xl font-bold text-center mb-3 gradient-text tracking-tight">Community Board</h1>
+      <p className="text-center text-white/50 text-sm mb-10 max-w-md mx-auto">See what other learners are exploring and requesting.</p>
       {loading ? (
-        <p className="text-center text-lg text-white/60">Loading prompt templates...</p>
+        <p className="text-center text-lg text-white/60">Loading requests...</p>
+      ) : prompts.length === 0 ? (
+        <p className="text-center text-white/40">No requests yet. Be the first to share what you want to learn!</p>
       ) : (
         <div className="max-w-2xl mx-auto space-y-5">
           {prompts.map((prompt) => (
             <div key={prompt.id} className="glass glow-hover rounded-2xl p-5">
-              <h2 className="text-xl font-semibold mb-2">{prompt.name}</h2>
+              <h2 className="text-lg font-semibold mb-1">{prompt.name}</h2>
               <p className="text-[#97BBFF] text-sm leading-relaxed">{prompt.prompt}</p>
             </div>
           ))}
