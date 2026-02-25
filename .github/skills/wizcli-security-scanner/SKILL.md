@@ -9,6 +9,14 @@ description: Enables AI agents to leverage the Wiz CLI (wizcli) for security sca
 
 This skill enables AI agents to use the Wiz CLI (`wizcli`) to scan code, containers, and infrastructure for security vulnerabilities, misconfigurations, and compliance issues. It provides structured guidance for interpreting scan results and recommending actionable remediations.
 
+## Prerequisites
+
+**CRITICAL**: This skill requires Wiz CLI **v1.x or higher**. Version 0.x is deprecated and end-of-life.
+
+- If wizcli is not installed or is v0.x, use the **wizcli-setup** skill first to install/upgrade to v1.x
+- Verify version with: `wizcli version` (must show v1.x)
+- Ensure authentication is configured (device code or service account)
+
 ## When to Use This Skill
 
 - When a developer asks to scan their code or infrastructure for security issues
@@ -186,18 +194,18 @@ For proactive monitoring by background agents:
 **User Request:**
 "Scan this project for security issues"
 
-\*\*Agentscan dir . --stdout=json --json
+**Agent Response:**
 
 ```bash
 # Running comprehensive security scan
-wizcli dir scan . --output json --output-file wiz-scan-results.json
+wizcli scan dir . --stdout=json --json-output-file wiz-scan-results.json
 
 # Analyzing results...
 ```
 
 **Report Format:**
 
-````
+```
 🔍 Wiz Security Scan Results
 
 📊 Summary:
@@ -224,24 +232,25 @@ wizcli dir scan . --output json --output-file wiz-scan-results.json
 📋 Recommended Actions:
 1. Immediate: Fix CRITICAL issues (estimated 2 hours)
 2. This Sprint: Address HIGH severity (estimated 1 day)
-3. Next Sprint:Container Image Vulnerability Check
+3. Next Sprint: Review and address MEDIUM priority issues
+```
+
+### Example 2: Container Image Vulnerability Check
 
 **User Request:**
 "Check if our Docker image has any critical vulnerabilities before deploying to production"
 
 **Agent Response:**
+
 ```bash
 # Scanning container image for vulnerabilities
 wizcli scan container-image myapp:latest --stdout=json --json-output-file scan-results.json
 
 # Optionally filter to only blocking issues
 wizcli scan container-image myapp:latest --by-policy-hits=BLOCK
-```bash
-# Scanning Docker image for vulnerabilities
-wizcli docker scan myapp:latest --output json
 
-# Analysis:
-````
+# Analyzing results...
+```
 
 **Report Format:**
 
@@ -272,19 +281,17 @@ Estimated fix time: 30 minutes
 ````
 
 ### Example 3: IaC Configuration Review
- for misconfigurations
-wizcli scan dir ./k8s --types=Kubernetes --stdout=json --json-output-file k8s-scan.json
 
-# Alternatively, focus only on misconfiguration findings
-wizcli scan dir ./k8s --types=Kubernetes --disabled-scanners=Vulnerability,Secret,SensitiveData,SoftwareSupplyChain,AIModels,SAST,Malware
+**User Request:**
 "Review our Kubernetes deployment for security misconfigurations"
 
 **Agent Response:**
+
 ```bash
 # Scanning Kubernetes manifests
-wizcli iac scan --path ./k8s --iac-type kubernetes --output json
+wizcli scan dir ./k8s --types=Kubernetes --stdout=json --json-output-file k8s-scan.json
 
-# Found 8 misconfigurations
+# Analyzing results...
 ````
 
 **Report Format:**
@@ -335,18 +342,19 @@ securityContext:
 ````
 
 ### Example 4: Secret Detection
- only (disable other scanners)
+
+**User Request:**
+"Check if we've accidentally committed any API keys or secrets"
+
+**Agent Response:**
+
+```bash
+# Scanning for secrets only (disable other scanners)
 wizcli scan dir . --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --stdout=json --json-output-file secrets-scan.json
 
-# Also check git history for patterns
-git log --all --full-history --diff-filter=D
-```bash
-# Scanning for secrets
-wizcli dir scan . --secrets-only --output json
-
-# Checking commit history...
+# Also check git history for secrets removed from current branch
 git log --all --full-history -- '*.env*' '*.pem' '*.key'
-````
+```
 
 **Report Format:**
 
@@ -420,18 +428,20 @@ Always structure scan results with:
 [Tips to prevent similar issues]
 ```
 
-Apply specific policies to the scan
+## Advanced Features
+
+### Policy and Project Scoping
+
+```bash
+# Apply specific policies to the scan
 wizcli scan dir . --policies policy-name-1,policy-name-2
 
 # Scope scan to specific Wiz projects
-
 wizcli scan dir . --projects project-id-1,project-id-2
 
 # Scan with application context for ignore rules
-
 wizcli scan dir . --applications production,backend-api
-
-````
+```
 
 ### Baseline Comparisons
 
@@ -493,16 +503,14 @@ wizcli scan dir ./infrastructure --types=Terraform,Kubernetes,Dockerfile --stdou
 1. **Authentication Errors**:
 
    ```bash
-   # Authenticate with service account
-   wizcli scan dir . --client-id=<id> --client-secret=<secret>
-
-   # Or use environment variables
-   export WIZ_CLIENT_ID=<your-client-id>
-   export WIZ_CLIENT_SECRET=<your-client-secret>
+   # Use environment variables (recommended)
+   export WIZ_CLIENT_ID="your-client-id"
+   export WIZ_CLIENT_SECRET="your-client-secret"
    wizcli scan dir .
 
-   # Interactive authentication with device code
-   wizcli scan dir . --use-device-code
+   # Or use wizcli auth command with device code
+   wizcli auth --use-device-code
+   wizcli scan dir .
    ```
 
 2. **Timeout Issues**:
@@ -574,7 +582,7 @@ Available output formats via `--stdout`:
 ## Notes
 
 - This skill is based on **Wiz CLI v1.29.0** (built 2026-01-31)
-- Always check `wizcli version` to ensure you're using v1.x
+- **REQUIRED**: You must use v1.x - v0.x is deprecated and end-of-life. Always check `wizcli version` before scanning.
 - Use `wizcli scan <subcommand> --help` for detailed flag documentation
 - For organization-specific policies, check with your security team
 - Keep scan results confidential - they contain vulnerability details
