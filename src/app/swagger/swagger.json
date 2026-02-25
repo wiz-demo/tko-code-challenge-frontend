@@ -1,0 +1,257 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Sorcery Solutions API",
+    "description": "API proxy routes for the Sorcery Solutions frontend application.",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current environment"
+    }
+  ],
+  "tags": [
+    { "name": "Chat", "description": "AI chat assistant" },
+    { "name": "Prompts", "description": "Prompt management" },
+    { "name": "Import", "description": "Bulk prompt import" }
+  ],
+  "paths": {
+    "/api/chat": {
+      "post": {
+        "tags": ["Chat"],
+        "summary": "Send a chat message",
+        "description": "Sends a message to the AI chat assistant and returns its response.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful chat response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/prompts": {
+      "get": {
+        "tags": ["Prompts"],
+        "summary": "List all prompts",
+        "description": "Retrieves the full list of community prompts.",
+        "responses": {
+          "200": {
+            "description": "A list of prompts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Prompt"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Prompts"],
+        "summary": "Create a prompt",
+        "description": "Creates a new community prompt.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromptCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Prompt created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prompt"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/import_prompts": {
+      "post": {
+        "tags": ["Import"],
+        "summary": "Import prompts from YAML",
+        "description": "Imports a batch of prompts from a YAML-formatted curriculum string.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportPromptsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Import completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportPromptsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChatRequest": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The user's message to send to the AI assistant",
+            "example": "What is prompt engineering?"
+          }
+        }
+      },
+      "ChatResponse": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string",
+            "description": "The AI assistant's reply"
+          }
+        }
+      },
+      "Prompt": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique prompt identifier"
+          },
+          "title": {
+            "type": "string",
+            "description": "Prompt title"
+          },
+          "content": {
+            "type": "string",
+            "description": "Prompt content"
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of the prompt"
+          }
+        }
+      },
+      "PromptCreate": {
+        "type": "object",
+        "required": ["title", "content"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Prompt title",
+            "example": "Code review helper"
+          },
+          "content": {
+            "type": "string",
+            "description": "Prompt content",
+            "example": "Review the following code for bugs and improvements..."
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of the prompt",
+            "example": "wizard42"
+          }
+        }
+      },
+      "ImportPromptsRequest": {
+        "type": "object",
+        "required": ["yaml_content"],
+        "properties": {
+          "yaml_content": {
+            "type": "string",
+            "description": "YAML-formatted curriculum content to import",
+            "example": "prompts:\n  - title: Example\n    content: An example prompt"
+          }
+        }
+      },
+      "ImportPromptsResponse": {
+        "type": "object",
+        "properties": {
+          "imported": {
+            "type": "integer",
+            "description": "Number of prompts successfully imported"
+          },
+          "message": {
+            "type": "string",
+            "description": "Status message"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message describing what went wrong"
+          }
+        }
+      }
+    }
+  }
+}

@@ -13,7 +13,8 @@
     "js-yaml": "^4.1.0",
     "next": "15.2.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "swagger-ui-react": "^5.31.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

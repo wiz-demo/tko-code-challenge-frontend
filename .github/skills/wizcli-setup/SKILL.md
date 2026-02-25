@@ -7,11 +7,14 @@ description: Guides AI agents through installing and authenticating the Wiz CLI 
 
 ## Overview
 
-This skill enables AI agents to guide users through installing the Wiz CLI (`wizcli`) and configuring authentication. It provides platform-specific installation instructions, multiple authentication methods, and verification steps to ensure the tool is ready for use.
+This skill enables AI agents to guide users through installing the Wiz CLI (`wizcli`) **v1.x** and configuring authentication. It provides platform-specific installation instructions, multiple authentication methods, and verification steps to ensure the tool is ready for use.
+
+**IMPORTANT**: Only Wiz CLI v1.x is supported. Version 0.x is deprecated and will be end-of-lifed. Always install or upgrade to v1.x.
 
 ## When to Use This Skill
 
 - When wizcli command is not found or not installed
+- **When wizcli v0.x is detected (must upgrade to v1.x)**
 - When authentication errors occur during wizcli scans
 - When setting up a new development environment
 - When onboarding new team members to Wiz security scanning
@@ -32,11 +35,17 @@ which wizcli
 wizcli version
 ```
 
-If wizcli is found and version shows v1.x or higher, skip to **Step 3: Authentication** and use the device code flow for easiest setup.
+**Version Check:**
+
+- If version shows **v1.x or higher**: Skip to **Step 3: Authentication** and use the device code flow for easiest setup.
+- If version shows **v0.x**: This version is deprecated and end-of-life. **You must upgrade to v1.x** - proceed to Step 2 to reinstall.
+- If wizcli is not found: Proceed to Step 2 to install v1.x.
 
 ### Step 2: Install Wiz CLI
 
 Provide platform-specific installation instructions based on the user's operating system.
+
+**CRITICAL**: Always install v1.x from the `/v1/wizcli/latest/` path. Do not use v0.x URLs.
 
 #### macOS Installation
 
@@ -138,11 +147,8 @@ wizcli auth --use-device-code
 # 4. Authenticate with your Wiz credentials
 # 5. Return to CLI - authentication is now cached
 
-# Verify authentication
-wizcli auth status
-
-# You're ready to scan!
-wizcli scan dir . --no-publish
+# You're ready to scan! Test with:
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **Benefits:**
@@ -177,11 +183,8 @@ wizcli auth --client-id="your-client-id" --client-secret="your-client-secret"
 export WIZ_CLIENT_ID="your-client-id"
 export WIZ_CLIENT_SECRET="your-client-secret"
 
-# Verify authentication
-wizcli auth status
-
-# Test with a simple scan
-wizcli scan dir . --help
+# Test authentication with a quick scan
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **Storing Credentials Securely:**
@@ -244,11 +247,8 @@ After installation and authentication, verify everything is working:
 # Check version (should show v1.x or higher)
 wizcli version
 
-# Check authentication status
-wizcli auth status
-
-# Run a test scan on current directory
-wizcli scan dir . --no-publish
+# Test authentication with a quick scan
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
 
 # If all commands succeed, setup is complete!
 ```
@@ -317,6 +317,29 @@ echo ".wiz" >> .gitignore
 
 ### Troubleshooting Common Issues
 
+**Issue: "Wizcli v0.x detected - need to upgrade"**
+
+Wiz CLI v0.x is deprecated and end-of-life. Upgrade to v1.x immediately:
+
+```bash
+# Check current version
+wizcli version
+
+# If v0.x is shown, remove old version
+sudo rm $(which wizcli)
+
+# Install v1.x (macOS Apple Silicon example)
+curl -Lo wizcli https://downloads.wiz.io/v1/wizcli/latest/wizcli-darwin-arm64
+chmod +x wizcli
+sudo mv wizcli /usr/local/bin/
+
+# Verify v1.x is installed
+wizcli version  # Should show v1.x
+
+# Re-authenticate (device code recommended)
+wizcli auth --use-device-code
+```
+
 **Issue: "command not found: wizcli"**
 
 ```bash
@@ -348,8 +371,8 @@ unset WIZ_CLIENT_ID WIZ_CLIENT_SECRET
 export WIZ_CLIENT_ID="your-client-id"
 export WIZ_CLIENT_SECRET="your-client-secret"
 
-# Verify
-wizcli auth status
+# Test the connection and authentication
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **Issue: "invalid API endpoint"**
@@ -443,7 +466,7 @@ wizcli version
 
 Great! Now let's set up authentication using the device code flow:
 
-```bash
+````bash
 # Authenticate with device code (easiest method)
 wizcli auth --use-device-code
 
@@ -452,11 +475,11 @@ wizcli auth --use-device-code
 # Sign in with your Wiz credentials
 # Return to the terminal - you're authenticated!
 
-# Verify authentication
-wizcli auth status
+# Test with a quick scan
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
 ```
 
-All set! You can now run security scans with `wizcli scan dir .`
+All set! Authentication is complete and verified.
 
 **Note:** For CI/CD pipelines or automation, you'll want to use a service account instead. See the skill documentation for service account setup instructions.
 
@@ -507,7 +530,7 @@ jobs:
           WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
           WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
         run: |
-          wizcli auth status
+          wizcli version
 
       - name: Run Wiz Scan
         env:
@@ -538,7 +561,7 @@ jobs:
             echo "❌ Critical security issues found!"
             exit 1
           fi
-```
+````
 
 This workflow will:
 
@@ -561,9 +584,6 @@ Let's troubleshoot your authentication. First, let me check your current setup:
 # Check if credentials are set
 echo "Client ID set: $([ -n "$WIZ_CLIENT_ID" ] && echo 'Yes' || echo 'No')"
 echo "Client Secret set: $([ -n "$WIZ_CLIENT_SECRET" ] && echo 'Yes' || echo 'No')"
-
-# Check auth status
-wizcli auth status
 ```
 
 If credentials are not set, let's configure them:
@@ -573,8 +593,8 @@ If credentials are not set, let's configure them:
 export WIZ_CLIENT_ID="your-client-id"
 export WIZ_CLIENT_SECRET="your-client-secret"
 
-# Verify
-wizcli auth status
+# Test authentication with a quick scan
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
 ```
 
 If you're still getting unauthorized errors, verify the following:
@@ -591,8 +611,8 @@ If you're still getting unauthorized errors, verify the following:
 # Set the correct endpoint
 export WIZ_API_ENDPOINT="https://api.us1.app.wiz.io"  # Change based on your region
 
-# Test connection
-wizcli auth status
+# Test connection with a quick scan
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **3. Check for typos in credentials:**
@@ -737,7 +757,7 @@ When using other Wiz skills, if authentication errors occur, refer back to this 
 
 ## Notes
 
-- **Version Compatibility**: These instructions are for Wiz CLI v1.x (latest as of January 2026)
+- **Version Compatibility**: These instructions are for Wiz CLI v1.x (latest as of January 2026). **v0.x is deprecated and end-of-life - do not use it**
 - **Regional Endpoints**: Ensure you use the correct API endpoint for your Wiz tenant region
 - **Credential Rotation**: Service account credentials should be rotated every 90 days
 - **Permission Scopes**: Request minimal permissions needed for your use case
@@ -772,15 +792,13 @@ wizcli version
 ```bash
 # Device code (recommended for local development)
 wizcli auth --use-device-code
-wizcli auth status
 
 # Service account (for CI/CD)
 export WIZ_CLIENT_ID="your-client-id"
 export WIZ_CLIENT_SECRET="your-client-secret"
-wizcli auth status
 
 # Test scan
-wizcli scan dir . --no-publish
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **Troubleshooting Commands:**
@@ -790,8 +808,7 @@ wizcli scan dir . --no-publish
 which wizcli
 wizcli version
 
-# Check authentication
-wizcli auth status
+# Check authentication variables
 echo $WIZ_CLIENT_ID
 
 # Test connectivity
