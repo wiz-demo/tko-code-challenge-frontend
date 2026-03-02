@@ -148,7 +148,7 @@ wizcli auth --use-device-code
 # 5. Return to CLI - authentication is now cached
 
 # You're ready to scan! Test with:
-echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **Benefits:**
@@ -184,7 +184,7 @@ export WIZ_CLIENT_ID="your-client-id"
 export WIZ_CLIENT_SECRET="your-client-secret"
 
 # Test authentication with a quick scan
-echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **Storing Credentials Securely:**
@@ -248,7 +248,7 @@ After installation and authentication, verify everything is working:
 wizcli version
 
 # Test authentication with a quick scan
-echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish && rm /tmp/wiz-test.txt
 
 # If all commands succeed, setup is complete!
 ```
@@ -372,7 +372,7 @@ export WIZ_CLIENT_ID="your-client-id"
 export WIZ_CLIENT_SECRET="your-client-secret"
 
 # Test the connection and authentication
-echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **Issue: "invalid API endpoint"**
@@ -476,7 +476,7 @@ wizcli auth --use-device-code
 # Return to the terminal - you're authenticated!
 
 # Test with a quick scan
-echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish && rm /tmp/wiz-test.txt
 ```
 
 All set! Authentication is complete and verified.
@@ -594,7 +594,7 @@ export WIZ_CLIENT_ID="your-client-id"
 export WIZ_CLIENT_SECRET="your-client-secret"
 
 # Test authentication with a quick scan
-echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish && rm /tmp/wiz-test.txt
 ```
 
 If you're still getting unauthorized errors, verify the following:
@@ -612,7 +612,7 @@ If you're still getting unauthorized errors, verify the following:
 export WIZ_API_ENDPOINT="https://api.us1.app.wiz.io"  # Change based on your region
 
 # Test connection with a quick scan
-echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **3. Check for typos in credentials:**
@@ -798,7 +798,7 @@ export WIZ_CLIENT_ID="your-client-id"
 export WIZ_CLIENT_SECRET="your-client-secret"
 
 # Test scan
-echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --scanners=Secrets --no-publish && rm /tmp/wiz-test.txt
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish && rm /tmp/wiz-test.txt
 ```
 
 **Troubleshooting Commands:**
@@ -813,6 +813,9 @@ echo $WIZ_CLIENT_ID
 
 # Test connectivity
 curl -I https://api.us1.app.wiz.io
+
+# Test authentication
+echo "test" > /tmp/wiz-test.txt && wizcli scan dir /tmp/wiz-test.txt --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish && rm /tmp/wiz-test.txt
 
 # Debug mode
 wizcli scan dir . --log=debug.log
