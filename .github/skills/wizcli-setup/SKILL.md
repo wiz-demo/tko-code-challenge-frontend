@@ -130,7 +130,7 @@ alias wizcli='docker run --rm -v $(pwd):/app wizio/wizcli:latest'
 
 ### Step 3: Authentication
 
-Wiz CLI supports multiple authentication methods. However, the **device code flow** is highly recommended for most users due to its simplicity and security. Service accounts are really only necessary for automation and CI/CD pipelines.
+Wiz CLI supports multiple authentication methods. However, the **device code flow** is highly recommended for most users due to its simplicity and security. For the purposes of this skill, we should **ALWAYS** trigger device code authentication when authentication is needed.
 
 #### Method 1: Interactive Device Code (Recommended for Individual Developers)
 
