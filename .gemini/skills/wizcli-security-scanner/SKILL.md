@@ -1,1 +1,0 @@
-../../../.github/skills/wizcli-security-scanner/SKILL.md
