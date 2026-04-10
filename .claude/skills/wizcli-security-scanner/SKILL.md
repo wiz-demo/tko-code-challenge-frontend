@@ -18,8 +18,8 @@ Every scan command must include:
 # Full scan
 wizcli scan dir . --no-publish --use-device-code --no-browser --by-policy-hits=DISABLED
 
-# Limit to specific scanners (disable the rest)
-wizcli scan dir . --disabled-scanners=Vulnerability,Secret,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish --use-device-code --no-browser --by-policy-hits=DISABLED
+# Limit to specific scanners (disable the rest; this example leaves only Vulnerability scanner enabled)
+wizcli scan dir . --disabled-scanners=Secret,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware --no-publish --use-device-code --no-browser --by-policy-hits=DISABLED
 ```
 
 Available scanners: `Vulnerability`, `Secret`, `SensitiveData`, `Misconfiguration`, `SoftwareSupplyChain`, `AIModels`, `SAST`, `Malware`
